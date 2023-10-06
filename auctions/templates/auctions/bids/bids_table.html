@@ -1,0 +1,26 @@
+<table style="margin-left: auto; margin-right: auto; width: 100%; ">
+    <thead>
+        <tr style="border-bottom: 0px solid #E5E5E5;">
+            <th scope="col" width="600px" style="text-align: center;">Listing</th>
+            <th scope="col" width="200px" style="text-align: center;">Bid</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        
+          {% for bid in bids %}
+              <tr>
+                <td colspan=1>
+                  
+                    {% include 'auctions/bids/listing_card_small.html' with listing=bid.listing %}
+                </td>
+                <td colspan=1 style="text-align: center; vertical-align: middle;">
+
+                  {% include 'auctions/bids/bid_status_card.html' %}              
+                </td>
+              </tr>
+
+          {% endfor %}
+
+    </tbody>      
+</table>

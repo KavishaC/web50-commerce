@@ -1,0 +1,53 @@
+
+<h3 style="margin: 10px;">Comments</h3>
+
+
+
+<div style="display: block; margin: 10px;" class="shadow-none p-3 mb-5 bg-light rounded">
+    
+    <form class="form-group" action="{% url 'add_comment' listing.id %}" method="POST" style="margin: 0px;">
+        {% csrf_token %}
+        <label for="exampleFormControlTextarea1"><h6>Add a new comment</h6></label>
+        
+        {% if listing.status == "1" %}
+            {% if user.is_authenticated %}
+                <textarea required name="content" class="form-control" id="exampleFormControlTextarea1" rows="3" minlength="1"></textarea>
+                <div style="display: inline-block; width: 876px;">
+                    <button type="submit" class="btn btn-primary" style="float: right; margin: 10px 0px 0px;">Post Comment</button>
+
+                </div>
+            {% else %}
+                <textarea disabled class="form-control" id="exampleFormControlTextarea1" rows="3">Log in to add a new comment</textarea>
+                <div style="display: inline-block; width: 876px;">
+                    <button disabled type="submit" class="btn btn-primary" style="float: right; display:block; margin: 10px 0px 0px;">Post Comment</button>
+                </div>
+            {% endif %}
+        
+        {% elif listing.status == "2" %}
+            <textarea disabled class="form-control" id="exampleFormControlTextarea1" rows="3">Auction closed.</textarea>
+            <div style="display: inline-block; width: 876px;">
+                <button disabled type="submit" class="btn btn-primary" style="float: right; display:block; margin: 10px 0px 0px;">Post Comment</button>
+            </div>
+
+        
+        {% endif %}
+        
+
+    </form>
+</div>
+
+<div style="display: block; margin: 10px;">
+
+    <h5>{{ listing.number_of_comments}}</h5>
+
+    {% for comment in listing.comments.all reversed %}
+        <div class="card" style="margin: 20px 0px">
+            <div class="card-body">
+                <h6 class="card-title"><a href="{% url 'account' comment.commenter.id %}">{{ comment.commenter }}</a></h6>
+                <p class="card-text">{{ comment.content }}</p>
+                <small class="text-muted">{{ comment.created }}</small>
+
+            </div>
+        </div>
+    {% endfor %}
+</div>

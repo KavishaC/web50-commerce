@@ -1,0 +1,35 @@
+{% if user == listing.lister %}
+    <div class="shadow-none p-3 mb-5 bg-light rounded" style="margin-top: 20px;">
+        <h3 style="margin: 10px;">
+            {{ listing.number_of_bids }}
+
+        </h3>
+
+        <table class="table" style=" margin-right: auto; margin-left: auto; background-color: white;">
+            <tbody>
+                {% for bid in listing.bids.all reversed %}
+                <tr style="border-bottom: 1px solid;">
+                    <td scope="row" style="padding-left: 50px;"><a href="{% url 'account' bid.bidder.id %}"><h6>{{ bid.bidder }}</h6></a></td>
+                    <td scope="row" style="text-align: center;"><small>{{ bid.created }}</small></td>
+                    <td scope="row" style="text-align: right; padding-right: 50px;"><h5>$ {{ bid.value }}</h5></td>
+
+                </tr>
+                {% endfor %}
+
+                {% if listing.bids.count == 0 %}
+                <tr>
+                    <td colspan=3 scope="row" style="text-align: center;"><small>There are no bids to display</small></td>
+
+                </tr>
+                {% endif %}
+
+                <tr style="border-bottom: 1px solid; background-color: #7F7F7F; color: white;">
+                    <td scope="row" colspan=1 style="padding-left: 50px; vertical-align: middle;"><h6>Starting Bid</h6></td>
+                    <td scope="row" style="text-align: center;"><small>{{ listing.created }}</small></td>
+                    <td scope="row" style="text-align: right; padding-right: 50px;" colspan=1><h5>$ {{ listing.starting_bid }}</h5></td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endif %}

@@ -1,0 +1,59 @@
+<div>
+    {% if listing in user.watchlist.all %}
+        <div style="position: absolute; width: 928px; display: inline-block;">
+            <span class="badge badge-primary" style="margin-right: 0px; float: right;">★</span>
+
+        </div>
+    {% endif %}
+
+    <div style="display: inline-block; background-color: #F8F9FA;">
+        <img src="{{ listing.photo }}" style="object-fit: contain; width: 400px; height: 400px;">
+    </div>
+
+    <div style="display: inline-block; width: 480px; margin: 10px; vertical-align: top; margin-left: 30px;">
+        <div style="display: block;">
+
+            <h2>{{ listing.title }}</h2>
+            <div style="display: inline-block; width: 240px">
+                <h6>Listed by: <a href="{% url 'account' listing.lister.id %}">{{ listing.lister }}</a></h6>
+                <p>{{ listing.created }}</p>
+            </div>
+            
+            <div style="width: 235px; display: inline-block;">
+                {% if user == listing.lister %}
+
+                    {% if listing.status == "1" %}
+                        <form action="{% url 'close_auction' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button style="margin: 10px 0px; float: right; " type="submit" class="btn btn-warning" >Close Auction</button>
+                        </form>
+                    {% elif listing.status == "2" %}
+                        <button style="margin: 10px 0px; float: right; " type="submit" class="btn btn-warning" >Auction Closed</button>
+
+                    {% endif %}
+
+                {% elif user.is_authenticated %}
+                    {% if listing in user.watchlist.all %}
+                        <form class="form-group" action="{% url 'remove_from_watchlist' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary" style="margin: 10px 0px; float: right; ">Remove from Watchlist</button>
+                        </form>
+                    {% else %}
+                        <form class="form-group" action="{% url 'add_to_watchlist' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" style="float: right; margin: 10px 0px;">Add to Watchlist ★</button>
+                        </form>                    
+                    {% endif %}
+
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary" style="margin: 10px 0px; float: right; ">Log in to add to Watchlist ★</a>
+
+                {% endif %}
+            </div>
+        
+            {% include 'auctions/listing/place_bid.html' %}
+
+        </div>
+    </div>
+
+</div>

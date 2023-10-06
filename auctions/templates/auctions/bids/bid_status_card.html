@@ -1,0 +1,31 @@
+
+<div class="card border-0 mb-3 bg-light rounded" style="height:200px; width: 200px;">
+    <div style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;">
+        <h6>Your Bid: $ {{ bid.value }}</h6>
+
+        {% if bid.listing.status == "1" %}
+            {% if bid.status == "Highest" %}
+                <h6 class="btn btn-info" style="width: 180px;">Currently the<br>highest bid</h6>
+
+            {% elif bid.status == "Out-bidded" %}  
+                <h6 class="btn btn-warning" style="width: 180px;">You have been<br>out-bidded</h6>
+                <a class="btn btn-outline-primary btn-sm" style="width: 180px;" role="button" href="{% url 'listing' bid.listing.id %}">Place Another Bid</a>
+
+            {% endif %}
+        {% else %}
+
+            {% if bid.status == "Won" %}
+                <h6 class="btn btn-success" style="width: 180px;">Congratulations!<br>You won the auction</h6>
+                <a class="btn btn-outline-primary btn-sm" style="width: 180px;" role="button" href="{% url 'account' bid.listing.lister.id %}">Contact Seller: {{ bid.listing.lister }}</a>
+
+            {% elif bid.status == "Lost" %}
+                <h6 class="btn btn-dark" style="width: 180px;">Sorry!<br>You lost the auction</h6>
+
+            {% endif %}
+                <p class="card-text">
+                    <small class="text-muted">Auction closed {{ bid.listing.date_closed }}</small>
+                </p>
+        {% endif %}
+    </div>
+</div>
+

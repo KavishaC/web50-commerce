@@ -1,0 +1,95 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+    {% include "auctions/alert.html" %}
+
+    <div class="card" style="display: block; margin: 20px;">
+        <div class="card-header">
+            <div style="width: 713px; display: inline-block;">
+                <h3 style="margin: 20px;">My Account</h3>
+
+            </div>
+            <div style="width: 200px; display: inline-block; text-align: right;">
+                <a href="{% url 'edit_account' %}" style="margin: 20px;">Edit Profile</a>
+            </div>
+        </div>
+        
+        <div style="padding: 40px;">
+        
+            <form action="{% url 'new_listing' %}" method="POST">
+                {% csrf_token %}
+                
+                <div style="display: inline-block; width: 623px; margin-left: 50px;">
+                
+                    <div class="form-group row">
+                
+                        <label for="userid" class="col-sm-2 col-form-label">User ID</label>
+                        <div class="col-sm-10">
+                            <div class="form-control-plaintext" id="userid"><strong>#{{ user.id }}</strong></div>
+                        
+                        </div>
+                    </div>
+                
+                    <div class="form-group row">
+                        <label for="username" class="col-sm-2 col-form-label">Username</label>
+                        <div class="col-sm-10">
+                            <div class="form-control-plaintext" id="username">{{ user.username }}</div>
+                
+                        </div>
+                        
+                    </div>
+                
+                    <div class="form-group row">
+                
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <div type="email" class="form-control-plaintext" id="email" name="email">{{ user.email }}</div>
+                            <div class="form-control-plaintext" id="password_text"><a href="{% url 'edit_password' %}">Change Password</a></div>
+
+                        </div>
+
+                        <div class="col-sm-10">
+                
+                        </div> 
+                    </div>
+
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+    <div style="width: 1000px; margin-left: auto; margin-right: auto;">
+
+        <h3 style="padding: 20px;">My Active Listings ({{ active_listings.count }})</h3>
+        {% if active_listings %}
+            {% for listing in active_listings reversed %}
+
+                {% include 'auctions/index/listing_card.html' %}
+            
+            {% endfor %}
+        {% else %}
+
+            No active listings
+        {% endif %}
+
+        <h3 style="padding: 20px;">My Closed Listings ({{ closed_listings.count }})</h3>
+        {% if closed_listings %}
+            {% for listing in closed_listings reversed %}
+
+                {% include 'auctions/index/listing_card.html' %}
+            
+            {% endfor %}
+        {% else %}
+
+            No closed listings
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+

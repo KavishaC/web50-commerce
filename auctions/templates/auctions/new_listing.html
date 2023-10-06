@@ -1,0 +1,98 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% include "auctions/alert.html" %}
+
+<div class="card" style="display: block; margin: 20px;">
+    <div class="card-header">
+        <h3 style="margin: 20px;">Create New Listing</h3>
+    </div>
+    <div style="padding: 40px;">
+        
+        <form action="{% url 'new_listing' %}" method="POST">
+            {% csrf_token %}
+            <p><small>Please note that you cannot edit a listing once created.</small></p>
+
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="exampleFormControlSelect2" name="category">
+                                <option selected disabled value="">Choose...</option>
+                            {% for category in categories %}
+                                <option>{{ category }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="title" class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                    <input required type="text" class="form-control" id="title" name="title">
+                    
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="lister" class="col-sm-2 col-form-label">Listed by</label>
+                    <div class="col-sm-10">
+                        <div type="text" class="form-control-plaintext" id="lister"><strong>{{ user }}</strong></div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="starting_bid" class="col-sm-2 col-form-label">Starting bid</label>
+                    <div class="input-group mb-2 col-sm-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                          </div>
+                        <input required type="number" class="form-control" id="starting_bid" name="starting_bid" style="text-align: right;">
+                        <div class="input-group-append">
+                            <div class="input-group-text">.00</div>
+                          </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="contact" class="col-sm-2 col-form-label">Contact</label>
+                    <div class="input-group mb-2 col-sm-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">+94</div>
+                          </div>
+                        <input required type="text" pattern="\d*" maxlength="9" minlength="9" class="form-control" id="contact" name="contact" style="text-align: left;">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="image_url" class="col-sm-2 col-form-label">Image URL</label>
+                    <div class="col-sm-10">
+                    <input required type="url" class="form-control" id="image_url" name="image_url">
+                    
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                    <textarea required style="resize: none;" type="text" class="form-control" id="description" name="description" rows="10"></textarea>
+                </div>
+
+                <div style="display: inline-block; width: 893px;">
+                    <button type="submit" class="btn btn-primary" style="float: right; margin: 20px 0px 0px;">Create Listing</button>
+    
+                </div>
+        </form>
+    </div>
+
+</div>
+
+    
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div style="width: 800px; margin-left: auto; margin-right: auto;">
+        <h4><small>{{ listings.count }} search results for...</small></h4>
+        <h2>"{{ query }}"</h2>
+
+        <div style="margin-top: 10px; margin-bottom: 20px; margin-left: auto; margin-right: auto;" class="btn-group btn-group-toggle" data-toggle="buttons">
+           
+                <label class="btn btn-outline-primary active" style="width: 160px;">
+                <input type="radio" name="options" id="option1" checked> All
+                </label>
+
+                <label class="btn btn-outline-primary" style="width: 80px;">
+                <input type="radio" name="options" id="option2"> Posts
+                </label>
+
+                <label class="btn btn-outline-primary" style="width: 80px;">
+                <input type="radio" name="options" id="option3"> Users
+                </label>
+
+        </div>
+
+        {% if listings|length > 0 %}
+
+            {% for listing in listings %}
+                {% include 'auctions/index/listing_card.html' %}
+
+            {% endfor %}
+        {% else %}
+
+            <h6>There are no listings to display</h6>
+
+        {% endif %}
+    </div>
+    
+{% endblock %}
+

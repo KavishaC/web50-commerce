@@ -1,0 +1,106 @@
+{% if user == listing.lister %}
+    <div class="shadow-none p-3 mb-5 bg-light rounded" style="display: block; width: 494px; float: right;">
+        {% if listing.highest_bid == False %}
+            <h4 style="display: block; text-align: center;">Starting Bid: $ {{ listing.starting_bid }}</h4>
+            <small style="display: block; text-align: center;">
+                {% if listing.status == "1" %}
+                    No bids have been placed.
+                {% elif listing.status == "2" %}
+                    Auction closed with no bids.
+                {% endif %}
+
+            </small>
+
+        {% else %}
+            <h4 style="display: block; text-align: center;">Highest Bid: $ {{ listing.highest_bid.value }}
+                <span class="badge badge-secondary">{{ listing.number_of_bids }}</span>
+            </h4>
+            
+            <small style="display: block; text-align: center;">
+                {% if listing.status == "1" %}
+                    Current highest bidder is: <a href>{{ listing.highest_bid.bidder }}</a>
+                {% elif listing.status == "2" %}
+                    <a class="btn btn-outline-primary btn-sm" role="button" href="{% url 'account' listing.highest_bid.bidder.id %}">Auction closed. Please contact highest bidder: {{ listing.highest_bid.bidder }}</a>
+                {% endif %}
+            
+            </small>
+
+
+        {% endif %}
+
+    </div>
+    
+    
+    {% elif user == listing.highest_bid.bidder and listing.status == "2" %}
+    <div class="shadow-none p-3 mb-5 bg-light rounded" style="display: block; width: 494px; float: right;">
+
+    <h4 style="display: block; text-align: center;">Your Bid: $ {{ listing.highest_bid.value }}
+        <span class="badge badge-secondary">{{ listing.number_of_bids }}</span>
+    </h4>
+    <div>
+            <a style="display: block; margin: auto;" class="btn btn-outline-primary btn-sm" role="button" href="{% url 'account' listing.lister.id %}">You won. Please contact lister: {{ listing.lister }}</a>
+    </div>
+    </div>
+
+{% elif lost == True %}
+    <div class="shadow-none p-3 mb-5 bg-light rounded" style="display: block; width: 494px; float: right;">
+        <h4 style="display: block; text-align: center;">Your Bid: $ {{ listing.highest_bid.value }}
+            <span class="badge badge-secondary">{{ listing.number_of_bids }}</span>
+        </h4>
+        <small style="display: block; text-align: center;">
+            Sorry, You lost the auction.
+        </small>
+    </div>
+
+
+
+
+
+{% else %}
+
+    <div class="shadow-none p-3 mb-5 bg-light rounded" style="display: block; width: 494px; height: 200px; float: right;">
+        <form action="{% url 'place_bid' listing.id %}" method="POST">
+            {% csrf_token %}
+
+            <div>
+                {% if listing.highest_bid == False %}
+                    <h4 style="display: block; text-align: center;">Starting Bid: $ {{ listing.starting_bid }}</h4>
+                    <small style="display: block; text-align: center;">Your bid must be equal to or higher than the starting bid.</small>
+                
+                {% else %}
+                    <h4 style="display: block; text-align: center;">Highest Bid: $ {{ listing.highest_bid.value }}
+                        <span class="badge badge-secondary">{{ listing.number_of_bids }}</span>
+                    </h4>
+                    
+                    <small style="display: block; text-align: center;">Your bid must be higher than the highest bid.</small>
+                
+                {% endif %}
+
+            </div>
+
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-lg">$</span>
+
+            </div>
+
+            {% if listing.highest_bid == False %}
+                <input required name="new_bid_value" style="text-align: center;" type="number" step="0.01" min="{{ listing.starting_bid }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">                    
+            
+            {% else %}
+                <input required name="new_bid_value" style="text-align: center;" type="number" step="0.01" min="{{ listing.new_bid_min_value }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <button style="margin: 10px 0px;" type="submit" class="btn btn-primary btn-lg btn-block">Place Bid</button>
+
+            {% else %}
+                <button disabled style="margin: 10px 0px;" type="submit" class="btn btn-primary btn-lg btn-block">Log in to Place Bid</button>
+            
+            {% endif %}
+
+        </form>
+            
+    </div>
+{% endif %}

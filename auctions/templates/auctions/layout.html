@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <h1>Auctions</h1>
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+                Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+                Not signed in.
+            {% endif %}
+        </div>
+
+        <nav class="navbar navbar-light">
+            
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                </li>
+    
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_bids' %}">My Bids
+                            {% if user.highest_bids.count > 0 %}
+                                <span class="badge btn-primary">
+                                    {{ user.highest_bids.count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_watchlist' %}">My Watchlist
+                            {% if user.watchlist.count > 0 %}
+                                <span class="badge btn-primary">
+                                    {{ user.highest_bids.count }}
+                                    {{ user.watchlist.count }}
+                                    
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new_listing' %}">Create New Listing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}" id="right-align">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="{% url 'my_bids' %}">My Bids</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="{% url 'my_watchlist' %}">My Watchlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="">My Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="{% url 'new_listing' %}">Create New Listing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}" id="right-align">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}" id="right-align">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <!--
+                <form class="form-inline" action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="field" value="all">
+                    <input required min=1 name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+
+
+            -->
+
+          </nav>
+
+        <hr>
+        <div style="width: 1000px; margin-right: auto; margin-left: auto;">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

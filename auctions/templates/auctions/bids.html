@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div style="margin-left: auto; margin-right: auto; width: 960px;">
+
+  <h2>My Bids </h2>
+
+  <br>
+  <h4>Active Listings ({{ open_bids|length }})</h4>
+
+  {% if not open_bids %}
+    <br>
+    <h6>There are no active bids to display.</h6>
+  {% else %}
+    {% include 'auctions/bids/bids_table.html' with bids=open_bids %}
+  {% endif %}
+  
+  <br>
+  <h4>Closed Listings ({{ closed_bids|length }})</h4>
+  {% if not closed_bids %}
+  <br>
+  <h6>There are no bids to display.</h6>
+  {% else %}
+  {% include 'auctions/bids/bids_table.html' with bids=closed_bids %}
+  {% endif %}
+  <br>
+    
+
+</div>
+    
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% include 'auctions/alert.html' %}
+
+    <div class="shadow p-3 mb-5 bg-white rounded" style="display: block; margin: 20px;">
+
+        {% if listing.status == "2" %}
+
+        {% endif %}
+
+        {% include 'auctions/listing/listing_main.html' %}
+
+        {% include 'auctions/listing/bids_table.html' %}
+        
+        {% include 'auctions/listing/description.html' %}
+
+        {% include 'auctions/listing/comments.html' %}
+
+    </div>
+
+{% endblock %}

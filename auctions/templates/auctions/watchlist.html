@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin-left: 100px;">Watchlist</h2>
+    {% if listings|length > 0 %}
+
+        {% for listing in listings %}
+            <div>
+                <div class="shadow-none p-3 mb-5 bg-light rounded" style="display: flex;">
+                    <div style="display: inline-block; width: 200px; height: 200px;">
+                        <a href="{% url 'listing' listing.id %}"><img src="{{ listing.photo }}" style="object-fit: contain; width: 100%; height: 100%;"></a>
+
+                    </div>
+                    <div style="margin-left: 20px;">
+
+                        <a href="{% url 'listing' listing.id %}"><h5>{{ listing.title }}</h5></a>
+                        <p class="font-weight-bold">Listed by: <a href>{{ listing.lister }}</a></p>
+
+                        {% if listing.highest_bid == False %}
+                            <p>Starting Bid: ${{ listing.starting_bid }}
+                                <span class="badge badge-secondary"></span>
+
+                            </p>
+                        {% else %}
+                            <p>Highest Bid: ${{ listing.highest_bid }}
+                                <span class="badge badge-dark">                          
+                                    {{ listing.number_of_bids }}
+                                </span>
+
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+
+       There are no listings in the watchlist
+    {% endif %}
+    
+{% endblock %}

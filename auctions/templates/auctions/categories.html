@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin-left: 20px;">Categories</h2>
+    <br>
+
+    <div class="card" style="width: 960px; margin-right: auto; margin-left: auto;">
+        <ul class="list-group list-group-flush">
+        {% for category in categories %}
+            <li class="list-group-item"><a href="{% url 'category' category.id %}">{{ category }} ({{ category.listings.count }})</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    
+    
+{% endblock %}
